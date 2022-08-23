@@ -11,39 +11,26 @@
     </head>
     <script src="./JavaScript_Functions_PiKing.js"></script>
     <body onload="startGame()">
-        <button id = "next" onclick="next()" style="font-size:20px; font-family:Consolas; position: fixed; top:243px; left:280px;">Next</button>
+        <button id = "next" onclick="next()" style="font-size:20px; font-family:Consolas; position: fixed; top:200px; left:300px;">Next</button>
         <button id = "restart" onclick="refresh()" style="font-size:20px; font-family:Consolas; position: fixed; top:243px; left:280px; display: none;">Restart</button>
         <script>        
             var level = 0;
+            //遊戲空間轉換設定
             function next() 
             {
                 if (level == 0)
                 {
                     level = 1;
                     document.getElementById("next").style.display="none";
-                }else if (level == 1)
-                {
-                    level = 2;
                 }
             }
-            //遊戲開始
+            //遊戲初始物品設定
             function startGame()
             {
-                EndSound = new sound("./sounds/end.wav");
                 GameArea.start(660,280,20);
                 Background = new object(700, 450, "./images/background.png", 0, -80, "background");
-                LobbyText = new object("50px", "Consolas", "black", 150, 40, "text");
-                LobbyImg = new object(420, 210, "./images/Money_Grabber.png", 120, 50, "image");
-                LobbyText2 = new object("40px", "Consolas", "black", 100, 100, "text");
-                LobbyPlayer1 = new object(60, 60, "./images/santa.png", 130, 185, "image");
-                LobbyPlayer2 = new object(60, 60, "./images/thief.png", 270, 185, "image");
-                LobbyPlayer3 = new object(60, 60, "./images/trekking.png", 410, 185, "image");
+                LobbyText = new object("50px", "Consolas", "black", 150, 100, "text");
                 Player = new object(60, 60, "./images/santa.png" , 130, 185, "image");
-                // Player.gravity = 0.05;
-                // Player.gravitySpeed = 0;
-                // Player.angle = 30;
-                // UpBtn = new object(50, 50, "./images/upbutton.png", 10, 150, "image");
-                // DownBtn = new object(50, 50, "./images/downbutton.png", 10, 230, "image");
                 LeftBtn = new object(30, 30, "./images/leftbutton.png", 20, 200, "image");
                 RightBtn = new object(30, 30, "./images/rightbutton.png", 80, 200, "image");
                 GameArea.timer = 0;
@@ -55,8 +42,9 @@
                 Enemy3 = [];
                 Score = new object("30px", "Consolas", "black", 270, 40, "text");
                 GameArea.nowscore = 0;
+                EndSound = new sound("./sounds/end.wav");
             }
-            //遊戲不斷執行
+            //遊戲不斷執行設定
             function LoopGame() 
             {
                 if (level==0)
@@ -66,36 +54,8 @@
                     LobbyText.text = "Money Grabber";
                     LobbyText.newShow();
                     LobbyImg.newShow();
-                    
-                }else if (level==1)
-                {
-                    GameArea.clear();
-                    Background.newShow();
-                    LobbyText2.text = "Choose one to Start";
-                    LobbyText2.newShow();
-                    LobbyPlayer1.newShow();
-                    LobbyPlayer2.newShow();
-                    LobbyPlayer3.newShow();
-                    if (GameArea.x && GameArea.y) 
-                    {
-                        if (LobbyPlayer1.clicked()) 
-                        {
-                            Player.image.src = "./images/santa.png";
-                            next();
-                        }
-                        else if (LobbyPlayer2.clicked()) 
-                        {
-                            Player.image.src = "./images/thief.png";
-                            next();
-                        }
-                        else if (LobbyPlayer3.clicked()) 
-                        {
-                            Player.image.src= "./images/trekking.png";
-                            next();
-                        }
-                    }
-                    
-                }else if (level==2)
+                }
+                else if (level==1)
                 {
                     //碰撞事件
                     for (i = 0; i < Gold.length; i += 1) 
@@ -152,8 +112,8 @@
                     {
                         if (Player.collision(Enemy3[i])) 
                         {
-                            EndSound.play();
                             GameArea.stop();
+                            EndSound.play();
                             document.getElementById("restart").style.display="";
                             return;
                         } 
@@ -162,64 +122,27 @@
                     GameArea.clear();
                     //背景
                     Background.newShow();
-
                     //玩家
                     //操控事件
-                    if (GameArea.key_is_pressed && GameArea.key_is_pressed[37]) {move(Player,'left',3);if (Player.image.src.indexOf("santa")!=-1){Player.image.src="./images/santa_2.png";}else if (Player.image.src.indexOf("thief")!=-1){Player.image.src="./images/thief_2.png";}else if (Player.image.src.indexOf("trekking")!=-1){Player.image.src="./images/trekking_2.png";};}
-                    if (GameArea.key_is_pressed && GameArea.key_is_pressed[39]) {move(Player,'right',3);if (Player.image.src.indexOf("santa")!=-1){Player.image.src="./images/santa.png";}else if (Player.image.src.indexOf("thief")!=-1){Player.image.src="./images/thief.png";}else if (Player.image.src.indexOf("trekking")!=-1){Player.image.src="./images/trekking.png";};}
-                    // if (GameArea.key_is_pressed && GameArea.key_is_pressed[38]) {move(Player,'up',2);/*rotation(Player,-1)*/}
-                    // if (GameArea.key_is_pressed && GameArea.key_is_pressed[40]) {move(Player,'down',2);}
-                    if (GameArea.key_is_pressed && GameArea.key_is_pressed[65]) {move(Player,'left',3);if (Player.image.src.indexOf("santa")!=-1){Player.image.src="./images/santa_2.png";}else if (Player.image.src.indexOf("thief")!=-1){Player.image.src="./images/thief_2.png";}else if (Player.image.src.indexOf("trekking")!=-1){Player.image.src="./images/trekking_2.png";};}
-                    if (GameArea.key_is_pressed && GameArea.key_is_pressed[68]) {move(Player,'right',3);if (Player.image.src.indexOf("santa")!=-1){Player.image.src="./images/santa.png";}else if (Player.image.src.indexOf("thief")!=-1){Player.image.src="./images/thief.png";}else if (Player.image.src.indexOf("trekking")!=-1){Player.image.src="./images/trekking.png";};}
-                    // if (GameArea.key_is_pressed && GameArea.key_is_pressed[87]) {move(Player,'up',2);/*rotation(Player,-1)*/}
-                    // if (GameArea.key_is_pressed && GameArea.key_is_pressed[83]) {move(Player,'down',2);}
-                    // if (GameArea.x && GameArea.y) 
+                    if (GameArea.key_is_pressed && GameArea.key_is_pressed[37]) {move(Player,'left',3);Player.image.src="./images/santa_2.png";}
+                    if (GameArea.key_is_pressed && GameArea.key_is_pressed[39]) {move(Player,'right',3);Player.image.src="./images/santa.png";}
+                    if (GameArea.key_is_pressed && GameArea.key_is_pressed[65]) {move(Player,'left',3);Player.image.src="./images/santa_2.png";}
+                    if (GameArea.key_is_pressed && GameArea.key_is_pressed[68]) {move(Player,'right',3);Player.image.src="./images/santa.png";}
+                    if (LeftBtn.clicked()) 
                     {
-                        // if (UpBtn.clicked()) 
-                        // {
-                        //     move(Player,'up',2);
-                        //     // rotation(Player,-1);
-                        // }
-                        // if (DownBtn.clicked()) 
-                        // {
-                        //     move(Player,'down',2);
-                        // }
-                        if (LeftBtn.clicked()) {
-                            move(Player,'left',3);
-                            if (Player.image.src.indexOf("santa")!=-1)
-                            {
-                                Player.image.src="./images/santa_2.png";
-                            }else if (Player.image.src.indexOf("thief")!=-1)
-                            {
-                                Player.image.src="./images/thief_2.png";
-                            }else if (Player.image.src.indexOf("trekking")!=-1)
-                            {
-                                Player.image.src="./images/trekking_2.png";
-                            };
-                        }
-                        if (RightBtn.clicked()) {
-                            move(Player,'right',3);
-                            if (Player.image.src.indexOf("santa")!=-1)
-                            {
-                                Player.image.src="./images/santa.png";
-                            }else if (Player.image.src.indexOf("thief")!=-1)
-                            {
-                                Player.image.src="./images/thief.png";
-                            }else if (Player.image.src.indexOf("trekking")!=-1)
-                            {
-                                Player.image.src="./images/trekking.png";
-                            };
-                        }
+                        move(Player,'left',3);
+                        Player.image.src="./images/santa_2.png";
+                    }
+                    if (RightBtn.clicked()) 
+                    {
+                        move(Player,'right',3);
+                        Player.image.src="./images/santa.png";
                     }
                     Player.newPosition();
                     Player.newShow();
-                    // UpBtn.newShow();
-                    // DownBtn.newShow();
                     LeftBtn.newShow();
                     RightBtn.newShow();
-
-                    //敵人
-                    //敵人產生器
+                    //產生器
                     GameArea.timer += 1;
                     if (GameArea.nowscore < 5)
                     {   
@@ -566,9 +489,9 @@
                             Enemy3[i].newShow();
                         }
                     }
-                    
-                    //遊戲機制
+                    //遊戲機制引用
                     border();
+                    gold_border();
                     enemy_border();
                     scorelimit();
                     Score.text = "SCORE: " + GameArea.nowscore;
@@ -586,42 +509,54 @@
                 {
                     Player.x = GameArea.canvas.width - Player.width;
                 }
-                // if (Player.y <= 0)
-                // {
-                //     Player.y = 0;
-                // }
-                if (Player.y > GameArea.canvas.height - Player.height)
+            }
+            function gold_border()
+            {
+                for (i = 0; i < Gold.length; i += 1) 
                 {
-                    Player.y = GameArea.canvas.height - Player.height;
-                    // Player.gravitySpeed = 0;
-                    // EndSound.play();
-                    // GameArea.stop();
-                    // document.getElementById("restart").style.display="";
-                    // Player.bounce = 0.6;
-                    // Player.gravitySpeed = -(Player.gravitySpeed * Player.bounce);
+                    if (Gold[i].y>=280)
+                    {
+                        Gold.splice(i, 1);
+                    }
+                }   
+                for (i = 0; i < Gold2.length; i += 1) 
+                {
+                    if (Gold2[i].y>=280)
+                    {
+                        Gold2.splice(i, 1);
+                    }
+                }      
+                for (i = 0; i < Gold3.length; i += 1) 
+                {
+                    if (Gold3[i].y>=280)
+                    {
+                        Gold3.splice(i, 1);
+                    }
                 }
-                // if (Player.angle > 31)
-                // {
-                //     rotation(Player,0);
-                //     Player.angle = 31;
-                // }else if(Player.angle < 30)
-                // {
-                //     Player.angle = 30;
-                // }else
-                // {
-                //     rotation(Player,0.5);
-                // }
             }
             function enemy_border()
             {
                 for (i = 0; i < Enemy.length; i += 1) 
                 {
-                    if (Enemy[i].y>=280 && Enemy[i].width != 0 && Enemy[i].height != 0)
+                    if (Enemy[i].y>=280)
                     {
-                        Enemy[i].width = 0;
-                        Enemy[i].height = 0;
+                        Enemy.splice(i, 1);
                     }
-                }        
+                }   
+                for (i = 0; i < Enemy2.length; i += 1) 
+                {
+                    if (Enemy2[i].y>=280)
+                    {
+                        Enemy2.splice(i, 1);
+                    }
+                }      
+                for (i = 0; i < Enemy3.length; i += 1) 
+                {
+                    if (Enemy3[i].y>=280)
+                    {
+                        Enemy3.splice(i, 1);
+                    }
+                }
             }
             function scorelimit()
             {
